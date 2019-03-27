@@ -4,6 +4,7 @@ from django.urls import reverse
 
 from rest_framework.test import APIClient
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 
 
 CREATE_USER_URL = reverse("user:create")
@@ -141,6 +142,14 @@ class PublicUserApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
+    def test_unauthorized_user_not_able_to_delete_token(self):
+        """
+        Test that authentication is required for delete token
+        """
+        res = self.client.get(DELETE_TOKEN_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 class PrivateUserAPITest(TestCase):
     """
@@ -214,10 +223,11 @@ class PrivateUserAPITest(TestCase):
 
     def test_user_delete_token_success(self):
         """
-        Test authenticated user logout to make token invalid
+        Test authenticated user logout to make old token invalid
         """
+        old_token = Token.objects.get_or_create(user=self.user)
         res = self.client.get(DELETE_TOKEN_URL)
+        new_token = Token.objects.get_or_create(user=self.user)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.user.refresh_from_db()
-        self.assertIsNone(getattr(self.user, "auth_token"))
+        self.assertNotEqual(old_token, new_token)

@@ -59,7 +59,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
 
     def __str__(self):
-        return "id: "+str(self.pk)+" name:"+self.name+" email:"+self.email+" status:"+self.status+" is_active:"+str(self.is_active)
+        return "id: "+str(self.pk) + " name:" + self.name + " email:" + \
+                self.email + " status:" + self.status + " is_active:" + \
+                str(self.is_active)
+
 
 class Tag(models.Model):
     """Tag to be used for a recipe"""

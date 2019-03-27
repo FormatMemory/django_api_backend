@@ -15,6 +15,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from core.models import User
 
+
 class CreateUserView(generics.CreateAPIView):
     """
     Create a new user in the system
@@ -44,6 +45,7 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
         """
         return self.request.user
 
+
 class DeleteTokenView(APIView):
     """
     Logout user, delete token
@@ -60,6 +62,7 @@ class DeleteTokenView(APIView):
             # logout(request)
             return Response({"success": _("Successfully logged out.")},
                             status=status.HTTP_200_OK)
+
     def get(self, request):
         """
         Delete user token
@@ -84,14 +87,17 @@ class UserListView(APIView):
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.IsAdminUser,)
 
-
     def get(self, request, format=None):
         """
         Return a list of all users.
         """
-        #users_base_info = [str(user) for user in User.objects.all()]
-        users_base_info = serialize('json', User.objects.all(), cls=LazyEncoder)
+        # users_base_info = [str(user) for user in User.objects.all()]
+        users_base_info = serialize(
+                                    'json',
+                                    User.objects.all(),
+                                    cls=LazyEncoder
+                                )
         return Response(
                         users_base_info,
-                        status=status.HTTP_200_OK    
+                        status=status.HTTP_200_OK
                         )
