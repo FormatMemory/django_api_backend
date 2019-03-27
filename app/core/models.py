@@ -48,11 +48,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     Custom user model that supports using email instead of username
     """
     email = models.EmailField(max_length=255, unique=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     status = models.CharField(max_length=50)
     user_type = models.CharField(max_length=50)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    location = models.CharField(max_length=255, blank=True)
+    phone = models.CharField(max_length=50, blank=True)
+    country_code = models.IntegerField(default=-1)
+    birthdate = models.DateField(null=True, blank=True)
+    gender = models.CharField(max_length=20, blank=True)
+    imei = models.CharField(max_length=50, blank=True)
+    language = models.CharField(max_length=25, blank=True)
 
     objects = UserManager()
 
