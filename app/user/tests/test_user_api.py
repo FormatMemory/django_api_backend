@@ -6,6 +6,9 @@ from rest_framework.test import APIClient
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 
+from core.models import User
+from user.serializers import UserSerializer
+
 
 CREATE_USER_URL = reverse("user:create")
 TOKEN_URL = reverse("user:token")
@@ -150,6 +153,24 @@ class PublicUserApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
+    def test_unauthorized_user_not_able_to_view_user_list(self):
+        """
+        Test that authentication is required for view user list
+        """
+        res = self.client.get(USER_LIST_URL)
+        self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        test_cases = [
+            {"xx": "12"},
+            {"email": "test@test.com"},
+            {"email": "dqw"},
+            {"pk": "1"},
+            {"name": "qwe"}
+        ]
+        for tc in test_cases:
+            res = self.client.get(USER_LIST_URL, tc)
+            self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 class PrivateUserAPITest(TestCase):
     """
@@ -231,3 +252,72 @@ class PrivateUserAPITest(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertNotEqual(old_token, new_token)
+
+    def test_normal_user_cannot_access_user_list(self):
+        """
+        Test normal authenticated user cannot access userlist
+        """
+        res = self.client.get(USER_LIST_URL)
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+        test_cases = [
+            {"xx": "12"},
+            {"email": "test@test.com"},
+            {"email": "dqw"},
+            {"pk": "1"},
+            {"name": "qwe"}
+        ]
+        for tc in test_cases:
+            res = self.client.get(USER_LIST_URL, tc)
+            self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class AdminUserAPITest(TestCase):
+    """
+    Test API requests that require admin permission
+    """
+
+    def setUp(self):
+        self.user = get_user_model().objects.create_superuser(
+            email="test@test.com",
+            password="testpassword",
+            name="TestName"
+        )
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def test_user_list_respond_correct_data(self):
+        """
+        Test admin user access user_list returns correct data
+        """
+        user1_payload = {
+            "email": "test1@test.com",
+            "password": "qiwdojioqw21e",
+            "name": "user1name"
+        }
+        user2_payload = {
+            "email": "test2@test.com",
+            "password": "adnojioqw21e",
+            "name": "user2name"
+        }
+        create_user(**user1_payload)
+        create_user(**user2_payload)
+
+        res = self.client.get(USER_LIST_URL)
+
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(res.data, serializer.data)
+
+        test_cases = {
+           ("xx", "12"): 0,
+           ("email", "test@test.com"): 1,
+           ("email", "dqw"): 0,
+           ("name", "qwe"): 0,
+           ("name", "user1name"): 1
+        }
+        for test_arg, exp_res in test_cases.items():
+            res = self.client.get(USER_LIST_URL, {test_arg[0]: test_arg[1]})
+            # print(test_arg, len(res.data), exp_res, res.data)
+            self.assertEqual(len(res.data), exp_res)
