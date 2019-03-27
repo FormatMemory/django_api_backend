@@ -9,6 +9,8 @@ from rest_framework import status
 CREATE_USER_URL = reverse("user:create")
 TOKEN_URL = reverse("user:token")
 ME_URL = reverse("user:me")
+DELETE_TOKEN_URL = reverse("user:delete_token")
+USER_LIST_URL = reverse("user:user_list")
 
 
 def create_user(**params):
@@ -209,3 +211,13 @@ class PrivateUserAPITest(TestCase):
             "email": self.user.email
         })
         self.assertTrue(self.user.check_password(payload["password"]))
+
+    def test_user_delete_token_success(self):
+        """
+        Test authenticated user logout to make token invalid
+        """
+        res = self.client.get(DELETE_TOKEN_URL)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.user.refresh_from_db()
+        self.assertIsNone(getattr(self.user, "auth_token"))
