@@ -20,6 +20,8 @@ mysql_data/mysql/*
 # cache
 app/media/*
 app/static/*
+static/*
+media/*
 
 # Environments
 .env
