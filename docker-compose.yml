@@ -4,11 +4,15 @@ services:
     app:
         build:
             context: .
+            args:
+                - TZ=${TIME_ZONE}
         restart: always
         ports:
             - "8000:8000"
         volumes:
             - ./app:/app
+            - ./static:/static
+            - ./media:/media
         command: >
             sh -c " python manage.py wait_for_db && 
                     python manage.py makemigrations &&
@@ -22,9 +26,9 @@ services:
             - DB_NAME=${DB_NAME}
             - DB_USER=${DB_USER}
             - DB_PASS=${DB_ROOT_PASS}
-            - DB_PORT=${DB_OUTSIDE_PORT} 
-            - SECRET_KEY=${SECRET_KEY}
+            - DB_PORT=${DB_PORT} 
             - TZ=${TIME_ZONE}
+            - ENVIRONMENT=${ENVIRONMENT}
         depends_on:
             - db
         links: # Link to containers in another service.
@@ -42,7 +46,6 @@ services:
             - TZ=${TIME_ZONE}
         volumes:
             - ./mysql_data/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-            # - ./mysql_data/init.sql:/data/application/init.sql
             - ./mysql_data/mysql:/var/lib/mysql
             - ./mysql_data/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
         # command: --init-file /data/application/init.sql
