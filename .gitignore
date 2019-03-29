@@ -1,14 +1,35 @@
-#My config and files
-config/*.secret
-.env
-sandbox/
+#My secret config and files
+app/config/*.secret
+app/sandbox/
+*.sqlite3
+
 # ignore files in folder mysql
 mysql_data/mysql/*
 # but keep the folder
 !mysql_data/mysql/.keep
 
+# Migrations
+**/migrations/*
+!**/migrations/__init__.py
+
+# Application
+# app/config/environment.py
+# app/config/settings/development.py
+# app/config/settings/production.py
+
 # cache
-app/static/
+app/media/*
+app/static/*
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
 # vs code 
 *.vscode/*
 *.vscode/settings.json
@@ -103,15 +124,6 @@ celerybeat-schedule
 
 # SageMath parsed files
 *.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
 
 # Spyder project settings
 .spyderproject
