@@ -39,12 +39,12 @@ RUN pip install -r requirements/production.txt
 RUN rm -rf .cache/pip
 RUN apk del .tmp-build-deps
 
-RUN adduser -D user
-RUN chown -R user:user /app/static/
-RUN chown -R user:user /app/media/
-RUN chmod -R 755 /app/static/
-RUN chmod -R 755 /app/media/
-USER user
+# RUN adduser -D user
+# RUN chown -R user:user /app/static/
+# RUN chown -R user:user /app/media/
+# RUN chmod -R 755 /app/static/
+# RUN chmod -R 755 /app/media/
+# USER user
 
 EXPOSE 8000
 #CMD ["python", "manage.py", "migrate"]
