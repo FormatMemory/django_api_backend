@@ -1,6 +1,6 @@
 import os
 
-ENVIRONMENT = os.environ.get('ENVIRONMENT')
+ENVIRONMENT = os.environ.get('ENVIRONMENT', 'local')
 # ENVIRONMENT = 'local'
 # ENVIRONMENT = 'development'
 # ENVIRONMENT = 'production'
