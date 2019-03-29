@@ -1,6 +1,6 @@
 #My secret config and files
 app/config/*.secret
-app/sandbox/
+sandbox/
 *.sqlite3
 
 # ignore files in folder mysql
