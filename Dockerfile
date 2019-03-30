@@ -3,7 +3,6 @@ MAINTAINER FormatMemory <davidthinkleding@gmail.com>
 
 ENV PYTHONUNBUFFERED 1
 ARG TIME_ZONE
-ARG TIME_ZONE
 
 RUN mkdir /app
 WORKDIR /app
@@ -51,3 +50,9 @@ USER user
 
 EXPOSE 8000
 #CMD ["python", "manage.py", "migrate"]
+# CMD ["gunicorn", "-c", "gunicorn_conf.py", "--chdir", "app", "app.wsgi:application", "--reload"]
+# RUN python manage.py wait_for_db
+# RUN python manage.py makemigrations
+# RUN python manage.py migrate
+# RUN python manage.py collectstatic --noinput
+# CMD ["gunicorn", "-c", "gunicorn_conf.py", "app.wsgi:application", "--reload"]

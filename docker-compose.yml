@@ -18,7 +18,7 @@ services:
                     python manage.py makemigrations &&
                     python manage.py migrate &&
                     python manage.py collectstatic --noinput &&
-                    python manage.py runserver 0.0.0.0:8000"
+                    gunicorn -c gunicorn_conf.py config.wsgi:application --reload"
         env_file:
             - .env
         environment:
@@ -49,3 +49,20 @@ services:
             - ./mysql_data/mysql:/var/lib/mysql
             - ./mysql_data/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
         # command: --init-file /data/application/init.sql
+
+    nginx:
+        build: ./nginx
+        restart: always
+        ports:
+            - "80:80"
+        # command: >
+        #     - nginx -g 'daemon off;'
+        volumes:
+            - ./nginx/:/etc/conf.d/
+            - ./static:/static
+            - ./media:/media
+            - ./log/:/log
+        depends_on:
+            - app
+        links:
+            - app

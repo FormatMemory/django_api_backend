@@ -13,3 +13,4 @@ pymysql>=0.9.3, <0.9.9
 # mysql-connector>=2.1.6, <2.2.0
 mysqlclient>=1.4.2.post1
 cryptography>=2.6.1, <2.7.0
+gunicorn>=19.9.0, <20.0.0
