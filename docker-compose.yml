@@ -51,14 +51,19 @@ services:
         # command: --init-file /data/application/init.sql
 
     nginx:
-        build: ./nginx
+        build:
+            context: ./nginx
+            args:
+                - TZ=${TIME_ZONE}
         restart: always
         ports:
             - "80:80"
         # command: >
         #     - nginx -g 'daemon off;'
+        environment:
+            - TZ=${TIME_ZONE}
         volumes:
-            - ./nginx/:/etc/conf.d/
+            - ./nginx/:/etc/nginx/conf.d/
             - ./static:/static
             - ./media:/media
             - ./log/:/log
