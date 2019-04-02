@@ -27,3 +27,8 @@ POST_STATUS_ACTIVE = 'active'
 POST_STATUS_BANNED = 'banned'
 POST_STATUS_EXPIRE = 'expire'
 POST_STATUS_AUDITED = 'audited'
+
+# View
+USER_VIEW_CHOICES = (
+    (1, 1),
+)
