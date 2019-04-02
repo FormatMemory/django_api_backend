@@ -36,7 +36,7 @@ class PostSerializerUpdate(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        exclude = ('user',)
+        exclude = ('user', 'date_posted', 'last_modified', )
 
     def validate(self, data):
         """
