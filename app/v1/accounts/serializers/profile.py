@@ -13,4 +13,4 @@ class ProfileSerializerUpdate(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('image',)
+        fields = ('gender', 'location', 'language', 'birthdate', 'bio', 'image', )

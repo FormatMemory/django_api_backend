@@ -24,6 +24,15 @@ class ProfileView(APIView):
 class ProfileDetail(APIView):
 
     @staticmethod
+    def get(request, profile_id):
+        """
+        View individual user
+        """
+
+        profile = get_object_or_404(Profile, pk=profile_id)
+        return Response(ProfileSerializer(profile).data)
+
+    @staticmethod
     def patch(request, profile_id):
         """
         Update profile of authenticated user

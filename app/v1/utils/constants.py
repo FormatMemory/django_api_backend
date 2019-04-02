@@ -16,3 +16,8 @@ VOTE_VALUE_CHOICES = (
     (VOTE_UP, 'Up'),
     (VOTE_DOWN, 'Down')
 )
+
+# User status
+USER_STATUS_ACTIVE = 'active'
+USER_STATUS_BANNED = 'banned'
+USER_STATUS_INACTIVE = 'inactive'
