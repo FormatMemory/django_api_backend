@@ -8,8 +8,7 @@ from v1.credits.models.invitation import Invitation
 class AcceptInvitationSerializer(serializers.Serializer):
     code = serializers.UUIDField()
     email = serializers.EmailField()
-    first_name = serializers.CharField(max_length=255)
-    last_name = serializers.CharField(max_length=255)
+    nick_name = serializers.CharField(max_length=50)
     password = serializers.CharField(max_length=128)
 
     def create(self, validated_data):
@@ -19,8 +18,7 @@ class AcceptInvitationSerializer(serializers.Serializer):
 
         user = User.objects.create(
             email=validated_data['email'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name']
+            nick_name=validated_data['nick_name'],
         )
         user.set_password(validated_data['password'])
         Invitation.objects.filter(code=validated_data['code']).update(receiver=user)

@@ -14,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'profile', 'role')
+        fields = ('id', 'email', 'nick_name', 'status', 'profile', 'role')
 
     @staticmethod
     def get_profile(user):
@@ -41,7 +41,7 @@ class UserSerializerCreate(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'password')
+        fields = ('email', 'nick_name', 'password')
 
     def validate(self, data):
         """
@@ -76,11 +76,11 @@ class UserSerializerLogin(UserSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'first_name', 'last_name', 'profile', 'role', 'token')
+        fields = ('id', 'email', 'nick_name', 'profile', 'role', 'token', 'status')
 
 
 class UserSerializerUpdate(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name')
+        fields = ('nick_name')
