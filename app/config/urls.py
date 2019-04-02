@@ -15,7 +15,8 @@ urlpatterns = [
     url(r'^', include('v1.replies.urls')),
     url(r'^', include('v1.user_roles.urls')),
     url(r'^', include('v1.votes.urls')),
-
+    url(r'^', include('v1.user_page_views.urls')),
+    
     # Core
     url(r'^admin/', admin.site.urls),
     url(r'^', include_docs_urls(title='DealSite')),

@@ -18,8 +18,15 @@ class PostView(APIView):
 
         posts = Post.objects.all()
         posts = post_filter(request, posts)
-        if type(posts) == Response:
-            return posts
+        try:
+            if 'order_by' in request.query_params:
+                posts.order_by(request.query_params['order_by'])
+            if 'limit' in request.query_params:
+                posts = posts[:int(request.query_params['limit'])]
+            if type(posts) == Response:
+                return posts
+        except Exception:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(PostSerializer(posts, many=True).data)
 
     @staticmethod
@@ -43,9 +50,12 @@ class PostDetail(APIView):
         """
         View individual post
         """
-
         post = get_object_or_404(Post, pk=post_id)
-        return Response(PostSerializerFull(post).data)
+        # add post total_view_number
+        serializer = PostSerializerUpdate(post, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+        return Response(PostSerializerUpdate(post).data)
 
     @staticmethod
     def patch(request, post_id):

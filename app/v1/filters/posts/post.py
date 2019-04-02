@@ -8,6 +8,7 @@ def post_filter(request, query):
 
     allowed = {
         'user': lambda x: int(x),
+        'date_expire': lambda x: bool(x),
     }
 
     return filter_query_params(allowed, query, request)
