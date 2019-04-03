@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-from v1.general import CreateModified
 from v1.general.created_modified import CreatedModified
 
 
