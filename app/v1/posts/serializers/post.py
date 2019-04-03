@@ -14,6 +14,7 @@ class PostSerializer(serializers.ModelSerializer):
     post_upper_votes_count = serializers.SerializerMethodField()
     post_down_votes_count = serializers.SerializerMethodField()
     user_page_view_count = serializers.SerializerMethodField()
+    login_user_page_view_count = serializers.SerializerMethodField()
     user = UserSerializer()
 
     class Meta:
@@ -28,6 +29,10 @@ class PostSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_user_page_view_count(post):
         return UserPageView.objects.filter(post=post).count()
+
+    @staticmethod
+    def get_login_user_page_view_count(post):
+        return UserPageView.objects.filter(post=post, user__isnull=False).count()
 
     @staticmethod
     def get_post_upper_votes_count(post):

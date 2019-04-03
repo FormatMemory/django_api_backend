@@ -54,10 +54,9 @@ class PostDetail(APIView):
         record post has get a view
         """
         post = get_object_or_404(Post, id=post_id)
-        user_page_view, created = UserPageView.objects.get_or_create(post=post, ip=request.META['REMOTE_ADDR'], created=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        user_page_view, created = UserPageView.objects.get_or_create(post=post, ip=request.META['REMOTE_ADDR'], created=datetime.now().strftime('%Y-%m-%d %H:%M:00'))
         if created: 
             user_page_view.session=request.session.session_key
-            
             user_page_view.user=request.user
             user_page_view.save()
                 # user_page_view.save()
@@ -70,7 +69,7 @@ class PostDetail(APIView):
         """
         post = get_object_or_404(Post, pk=post_id)
         PostDetail._record_view(request, post_id)
-        return Response(PostSerializerUpdate(post).data)
+        return Response(PostSerializerFull(post).data)
 
     @staticmethod
     def patch(request, post_id):
