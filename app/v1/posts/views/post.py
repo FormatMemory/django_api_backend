@@ -5,7 +5,10 @@ from rest_framework.views import APIView
 from v1.filters.posts.post import post_filter
 from v1.posts.models.post import Post
 from v1.posts.serializers.post import PostSerializer, PostSerializerCreate, PostSerializerFull, PostSerializerUpdate
+from v1.user_page_views.models.user_page_view import UserPageView
+from v1.accounts.models.user import User
 
+from datetime import datetime
 
 # posts
 class PostView(APIView):
@@ -46,15 +49,27 @@ class PostView(APIView):
 class PostDetail(APIView):
 
     @staticmethod
+    def _record_view(request, post_id):
+        """
+        record post has get a view
+        """
+        post = get_object_or_404(Post, id=post_id)
+        user_page_view, created = UserPageView.objects.get_or_create(post=post, ip=request.META['REMOTE_ADDR'], created=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        if created: 
+            user_page_view.session=request.session.session_key
+            
+            user_page_view.user=request.user
+            user_page_view.save()
+                # user_page_view.save()
+                # return HttpResponse(u"%s" % UserPageView.objects.filter(question=question).count())
+
+    @staticmethod
     def get(request, post_id):
         """
         View individual post
         """
         post = get_object_or_404(Post, pk=post_id)
-        # add post total_view_number
-        serializer = PostSerializerUpdate(post, partial=True)
-        if serializer.is_valid():
-            serializer.save()
+        PostDetail._record_view(request, post_id)
         return Response(PostSerializerUpdate(post).data)
 
     @staticmethod

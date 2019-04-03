@@ -25,20 +25,20 @@ class UserPageViewView(APIView):
 # user_page_views/{user_page_view_id}
 class UserPageViewDetail(APIView):
 
-    @staticmethod
-    def patch(request, user_page_view_id):
-        """
-        Update user page view
-        """
+    # @staticmethod
+    # def patch(request, user_page_view_id):
+    #     """
+    #     Update user page view
+    #     """
 
-        user_page_view = get_object_or_404(UserPageView, pk=user_page_view_id)
-        if user_page_view.user != request.user:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        serializer = UserPageViewSerializerUpdate(user_page_view, data=request.data, context={'request': request}, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(UserPageViewSerializer(serializer.instance).data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #     user_page_view = get_object_or_404(UserPageView, pk=user_page_view_id)
+    #     if user_page_view.user != request.user:
+    #         return Response(status=status.HTTP_401_UNAUTHORIZED)
+    #     serializer = UserPageViewSerializerUpdate(user_page_view, data=request.data, context={'request': request}, partial=True)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(UserPageViewSerializer(serializer.instance).data)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def delete(request, user_page_view_id):
