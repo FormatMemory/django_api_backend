@@ -21,6 +21,7 @@ class PostView(APIView):
 
         posts = Post.objects.all()
         posts = post_filter(request, posts)
+        # paginate_by = 10
         try:
             if 'order_by' in request.query_params:
                 posts.order_by(request.query_params['order_by'])
