@@ -1,7 +1,10 @@
 from django.conf import settings
 from django.db import models
+from v1.general import CreateModified
+from v1.general.created_modified import CreatedModified
 
-class Profile(models.Model):
+
+class Profile(CreatedModified):
     gender = models.CharField(max_length=20, blank=True)
     location = models.CharField(max_length=125, blank=True)
     language = models.CharField(max_length=50, blank=True)
