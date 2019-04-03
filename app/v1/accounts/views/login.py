@@ -22,5 +22,6 @@ class LoginView(APIView):
         user = authenticate(username=user.email, password=request.data.get('password'))
         if user:
             serializer = UserSerializerLogin(user)
+            User.objects.filter(id=user.id).update(last_ip=request.META['REMOTE_ADDR'])
             return Response(serializer.data)
         return Response(status=status.HTTP_400_BAD_REQUEST)

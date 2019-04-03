@@ -47,7 +47,7 @@ class UserSerializerCreate(serializers.ModelSerializer):
         """
         Administrator permissions needed
         """
-
+# User.objects.filter(id=user.id).update(last_ip=request.META['REMOTE_ADDR'])
         if not is_administrator(self.context['request'].user):
             raise serializers.ValidationError(constants.PERMISSION_ADMINISTRATOR_REQUIRED)
         return data

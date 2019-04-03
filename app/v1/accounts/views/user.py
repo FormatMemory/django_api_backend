@@ -31,6 +31,7 @@ class UserView(APIView):
         if serializer.is_valid():
             user = serializer.save()
             user.set_password(serializer.validated_data['password'])
+            user.update(signup_ip=request.META['REMOTE_ADDR'])
             user.save()
             Profile(user=user).save()
             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
