@@ -7,6 +7,14 @@ from v1.votes.models.post_vote import PostVote
 from v1.votes.serializers.post_vote import PostVoteSerializer
 from v1.user_page_views.models.user_page_view import UserPageView
 from v1.user_page_views.serializers.user_page_view import UserPageViewSerializer
+from v1.categories.models.category import Category
+
+class PostCategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category 
+        fields = ('title',)
+
 
 class PostSerializer(serializers.ModelSerializer):
     post_reply_count = serializers.SerializerMethodField()
@@ -18,11 +26,12 @@ class PostSerializer(serializers.ModelSerializer):
     go_to_link = serializers.SerializerMethodField()
     login_user_go_to_link = serializers.SerializerMethodField()
     user = UserSerializer()
+    category = PostCategorySerializer(many=True)
 
     class Meta:
         model = Post
         fields = '__all__'
-        ordering = ['-post_total_view', '-post_votes', '-date_posted']
+        ordering = ['-post_total_view', '-post_votes', '-created_time']
 
     @staticmethod
     def get_post_reply_count(post):
@@ -61,7 +70,7 @@ class PostSerializerCreate(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = '__all__'
-        exclude = ('status', 'total_views', 'date_posted', 'last_modified',)
+        exclude = ('status', 'total_views', 'created_time', 'last_modified',)
 
 class PostSerializerFull(PostSerializer):
     post_replies = PostReplySerializer(many=True, read_only=True)
@@ -71,7 +80,7 @@ class PostSerializerUpdate(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        exclude = ('user', 'date_posted', 'last_modified', )
+        exclude = ('user', 'created_time', 'last_modified', )
 
     def validate(self, data):
         """

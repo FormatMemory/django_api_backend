@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^', include('v1.user_roles.urls')),
     url(r'^', include('v1.votes.urls')),
     url(r'^', include('v1.user_page_views.urls')),
+    url(r'^', include('v1.categories.urls')),
     
     # Core
     url(r'^admin/', admin.site.urls),
