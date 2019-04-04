@@ -4,6 +4,7 @@ from v1.general.created_modified import CreatedModified
 
 
 class Wallet(CreatedModified):
+    id = models.AutoField(primary_key=True)
     balance = models.IntegerField(default=0)
     user = models.OneToOneField(settings.AUTH_USER_MODEL,  on_delete=models.CASCADE)
 
