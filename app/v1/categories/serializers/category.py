@@ -50,11 +50,12 @@ class CategorySerializerUpdate(CategorySerializer):
     class Meta:
         model = Category
         fields = '__all__'
+
     def validate(self, data):
         """
         administrator permissions needed
         """
         if not is_administrator(self.context['request'].user):
-            raise serializers.validationerror(constants.permission_administrator_required)
+            raise serializers.ValidationError(constants.PERMISSION_ADMINISTRATOR_REQUIRED)
         
         return data
