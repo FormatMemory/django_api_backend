@@ -20,8 +20,8 @@ class UserPageViewSerializerCreate(serializers.ModelSerializer):
 class UserPageViewSerializerUpdate(serializers.ModelSerializer):
 
     class Meta:
-        model = UserPageView 
-        exclude = ('post', 'user', 'start_time')
+        model = UserPageView
+        exclude = ('post', 'user', 'created', 'ip', 'user')
 
     def validate(self, data):
         """

@@ -9,11 +9,10 @@ def user_page_views_filter(request, query):
     allowed = {
         'user': lambda x: int(x),
         'post': lambda x: int(x), 
-        'start_time__startswith': lambda x: date(x),
-        'start_time__year': lambda x: date(x).year,
-        'start_timee__month': lambda x: date(x).month, 
-        'start_time__day': lambda x: date(x).day,
+        'created__startswith': lambda x: date(x),
+        'created__year': lambda x: date(x).year,
+        'created__month': lambda x: date(x).month,
+        'created__day': lambda x: date(x).day,
     }
 
     return filter_query_params(allowed, query, request)
-

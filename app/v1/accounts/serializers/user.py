@@ -47,9 +47,13 @@ class UserSerializerCreate(serializers.ModelSerializer):
         """
         Administrator permissions needed
         """
+        if User.objects.get(email=data.email).exist() or User.objects.get(nickname=data.nick_name).exist():
+            raise serializers.ValidationError(constants.USER_OR_NICKNAME_EXIST)
 
-        if not is_administrator(self.context['request'].user):
-            raise serializers.ValidationError(constants.PERMISSION_ADMINISTRATOR_REQUIRED)
+        ## enable everyone to create user
+        # if not is_administrator(self.context['request'].user):
+        #     raise serializers.ValidationError(constants.PERMISSION_ADMINISTRATOR_REQUIRED)
+        
         return data
 
     @staticmethod

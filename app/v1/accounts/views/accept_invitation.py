@@ -17,6 +17,7 @@ class AcceptInvitationView(APIView):
         """
 
         serializer = AcceptInvitationSerializer(data=request.data, context={'request': request})
+        
         if serializer.is_valid():
             user = serializer.save()
             return Response(UserSerializerLogin(user).data, status=status.HTTP_201_CREATED)

@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'v1.user_roles.apps.UserRolesConfig',
     'v1.votes.apps.VotesConfig',
     'v1.user_page_views.apps.ViewsConfig',
+    'v1.categories.apps.CategoriesConfig',
 
     # Base
     'django.contrib.admin',
@@ -29,6 +30,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
+    #Model Tags
+    'taggit',
 
 ]
 

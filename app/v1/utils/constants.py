@@ -32,3 +32,6 @@ POST_STATUS_AUDITED = 'audited'
 USER_VIEW_CHOICES = (
     (1, 1),
 )
+
+# email or nickname Exist
+USER_OR_NICKNAME_EXIST = "User or nickname exists"
