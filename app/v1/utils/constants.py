@@ -35,3 +35,7 @@ USER_VIEW_CHOICES = (
 
 # email or nickname Exist
 USER_OR_NICKNAME_EXIST = "User or nickname exists"
+
+# library status
+LIBRARY_STATUS_PUBLIC = 'public'
+LIBRARY_STATUS_PRIVATE = 'private'

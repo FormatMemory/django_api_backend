@@ -6,6 +6,7 @@ from .views.profile import ProfileView, ProfileDetail
 from .views.reset_password import ResetPasswordView
 from .views.update_password import UpdatePasswordView
 from .views.user import UserView, UserDetail
+from .views.libraries import LibraryView, LibraryDetailView, LibraryItemDetailView
 
 
 urlpatterns = [
@@ -28,5 +29,10 @@ urlpatterns = [
     # Users
     url(r'^users$', UserView.as_view()),
     url(r'^users/(?P<user_id>[\d]+)$', UserDetail.as_view()),
+
+    # Library
+    url(r'^libraries$', LibraryView.as_view()),
+    url(r'^libraries/(?P<library_id>[\d]+)$', LibraryDetailView.as_view()),
+    url(r'^libraries/(?P<library_id>[\d]+)$/(?P<library_item_id>[\d]+)$', LibraryItemDetailView.as_view()),
 
 ]
