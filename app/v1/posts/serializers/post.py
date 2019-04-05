@@ -16,6 +16,14 @@ class PostCategorySerializer(serializers.ModelSerializer):
         fields = ('title',)
 
 
+class PostSimpleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = ('id', 'title', 'image', )
+        ordering = ['title', '-created_time']
+
+
 class PostSerializer(serializers.ModelSerializer):
     post_reply_count = serializers.SerializerMethodField()
     post_votes = PostVoteSerializer(many=True, read_only=True)

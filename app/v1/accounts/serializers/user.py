@@ -3,18 +3,27 @@ from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from v1.accounts.models.profile import Profile
 from v1.accounts.models.user import User
+# from v1.accounts.models.libraries import Library
 from v1.utils import constants
 from v1.utils.permissions import is_administrator, is_moderator
-from .profile import ProfileSerializer
+from v1.accounts.serializers.profile import ProfileSerializer
+# from v1.accounts.serializers.libraries import LibrarySerializer 
 
+class UserSimpleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'nick_name', 'status',)
 
 class UserSerializer(serializers.ModelSerializer):
     profile = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
+    libraries = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'nick_name', 'status', 'profile', 'role')
+        # fields = ('id', 'email', 'nick_name', 'status', 'profile', 'role', 'libraries')
+        fields = ('id', 'email', 'nick_name', 'status', 'profile', 'role', )
 
     @staticmethod
     def get_profile(user):
@@ -35,6 +44,19 @@ class UserSerializer(serializers.ModelSerializer):
             return constants.USER_ROLE_ADMINISTRATOR
         if is_moderator(user):
             return constants.USER_ROLE_MODERATOR
+
+    # @staticmethod
+    # def get_libraries(user):
+    #     """
+    #     Get or create Library
+    #     """
+
+    #     # library, created = Library.objects.get_or_create(user=user)
+    #     try:
+    #         libraries = Library.objects.get(user=user)
+    #     except Library.DoesNotExist:
+    #         libraries = [Library.objects.create(user=user)]
+    #     return LibrarySerializer(libraries, read_only=True, many=True).data
 
 
 class UserSerializerCreate(serializers.ModelSerializer):

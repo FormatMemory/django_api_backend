@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from v1.accounts.models.profile import Profile
 from v1.accounts.models.user import User
+from v1.accounts.models.libraries import Library
 from v1.accounts.serializers.user import UserSerializer, UserSerializerCreate, UserSerializerLogin, UserSerializerUpdate
 from v1.utils import constants
 from v1.utils.permissions import is_administrator, is_moderator
@@ -34,6 +35,7 @@ class UserView(APIView):
             user.update(signup_ip=request.META['REMOTE_ADDR'])
             user.save()
             Profile(user=user).save()
+            Library(user=user).save()
             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

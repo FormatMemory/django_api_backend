@@ -11,7 +11,7 @@ class Post(CreatedModified):
     title = models.CharField(max_length=255)
     body = models.TextField()
     image = models.ImageField(blank=True)
-    link = models.URLField(blank=True)
+    deal_link = models.URLField(blank=True)
     date_expire = models.DateTimeField(null=True, blank=True) # DurationField
     # date_posted = models.DateTimeField(null=True, auto_now_add=True)
     # last_modified = models.DateTimeField(null=True, auto_now=True)
