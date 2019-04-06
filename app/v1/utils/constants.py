@@ -39,3 +39,8 @@ USER_OR_NICKNAME_EXIST = "User or nickname exists"
 # library status
 LIBRARY_STATUS_PUBLIC = 'public'
 LIBRARY_STATUS_PRIVATE = 'private'
+
+# Report status
+REPORT_STATUS_ACTIVE = 'active'
+REPORT_STATUS_OK = 'ok'
+REPORT_STATUS_INVALID = 'invalid'

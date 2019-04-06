@@ -18,7 +18,8 @@ urlpatterns = [
     url(r'^', include('v1.user_page_views.urls')),
     url(r'^', include('v1.categories.urls')),
     url(r'^', include('v1.follows.urls')),
-    
+    url(r'^', include('v1.reports.urls')),
+
     # Core
     url(r'^admin/', admin.site.urls),
     url(r'^', include_docs_urls(title='DealSite')),

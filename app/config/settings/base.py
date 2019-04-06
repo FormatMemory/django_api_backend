@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'v1.user_page_views.apps.ViewsConfig',
     'v1.categories.apps.CategoriesConfig',
     'v1.follows.apps.FollowsConfig',
+    'v1.reports.apps.ReportsConfig',
 
     # Base
     'django.contrib.admin',
