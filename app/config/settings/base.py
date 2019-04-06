@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'v1.votes.apps.VotesConfig',
     'v1.user_page_views.apps.ViewsConfig',
     'v1.categories.apps.CategoriesConfig',
+    'v1.follows.apps.FollowsConfig',
 
     # Base
     'django.contrib.admin',
