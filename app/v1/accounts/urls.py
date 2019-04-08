@@ -33,6 +33,6 @@ urlpatterns = [
     # Library
     url(r'^libraries$', LibraryView.as_view()),
     url(r'^libraries/(?P<library_id>[\d]+)$', LibraryDetailView.as_view()),
-    url(r'^libraries/(?P<library_id>[\d]+)$/(?P<library_item_id>[\d]+)$', LibraryItemDetailView.as_view()),
+    url(r'^libraries/(?P<library_id>[\d]+)/(?P<library_item_id>[\d]+)$', LibraryItemDetailView.as_view()),
 
 ]

@@ -9,6 +9,7 @@ from v1.filters.user_page_views.user_page_views import user_page_views_filter
 # user_page_views
 class UserPageViewView(APIView):
 
+
     @staticmethod
     def post(request):
         """
