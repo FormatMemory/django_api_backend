@@ -16,7 +16,7 @@ class UserSimpleSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     profile = serializers.SerializerMethodField()
     role = serializers.SerializerMethodField()
-    libraries = serializers.SerializerMethodField()
+    # libraries = serializers.SerializerMethodField()
 
     class Meta:
         model = User
