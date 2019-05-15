@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView
+from rest_framework.pagination import PageNumberPagination
 from v1.filters.posts.post import post_filter
 from v1.posts.models.post import Post
 from v1.posts.serializers.post import PostSerializer, PostSerializerCreate, PostSerializerFull, PostSerializerUpdate
@@ -10,40 +12,53 @@ from v1.accounts.models.user import User
 
 from datetime import datetime
 
+class PostPagination(PageNumberPagination):
+    page_size = 1
+
+#posts
+class PostView(ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    pagination_class = PostPagination
+
+
+
+
 # posts
-class PostView(APIView):
+# class PostView(APIView):
 
-    @staticmethod
-    def get(request):
-        """
-        List posts
-        """
+#     pagination_class = PostPagination
 
-        posts = Post.objects.all()
-        posts = post_filter(request, posts)
-        # paginate_by = 10
-        try:
-            if 'order_by' in request.query_params:
-                posts.order_by(request.query_params['order_by'])
-            if 'limit' in request.query_params:
-                posts = posts[:int(request.query_params['limit'])]
-            if type(posts) == Response:
-                return posts
-        except Exception:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        return Response(PostSerializer(posts, many=True).data)
+#     @staticmethod
+#     def get(request):
+#         """
+#         List posts
+#         """
+#         posts = Post.objects.all()
+#         posts = post_filter(request, posts)
+#         paginate_by = 1
+#         try:
+#             if 'order_by' in request.query_params:
+#                 posts.order_by(request.query_params['order_by'])
+#             if 'limit' in request.query_params:
+#                 posts = posts[:int(request.query_params['limit'])]
+#             if type(posts) == Response:
+#                 return posts
+#         except Exception:
+#             return Response(status=status.HTTP_400_BAD_REQUEST)
+#         return Response(PostSerializer(posts, many=True).data)
 
-    @staticmethod
-    def post(request):
-        """
-        Create post
-        """
+#     @staticmethod
+#     def post(request):
+#         """
+#         Create post
+#         """
 
-        serializer = PostSerializerCreate(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(PostSerializer(serializer.instance).data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         serializer = PostSerializerCreate(data=request.data, context={'request': request})
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(PostSerializer(serializer.instance).data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # posts/{post_id}
