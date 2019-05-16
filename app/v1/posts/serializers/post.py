@@ -8,6 +8,8 @@ from v1.votes.serializers.post_vote import PostVoteSerializer
 from v1.user_page_views.models.user_page_view import UserPageView
 from v1.user_page_views.serializers.user_page_view import UserPageViewSerializer
 from v1.categories.models.category import Category
+import datetime
+
 
 class PostCategorySerializer(serializers.ModelSerializer):
 
@@ -73,12 +75,39 @@ class PostSerializer(serializers.ModelSerializer):
     # def get_post_total_view = Post.objects.filter(post=post)['total_views']
 
 class PostSerializerCreate(serializers.ModelSerializer):
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    # category = PostCategorySerializer(many=True)
 
     class Meta:
         model = Post
         fields = '__all__'
-        exclude = ('status', 'total_views', 'created_time', 'last_modified',)
+        # exclude = ('status', 'total_views', 'created_time', 'last_modified', 'category')
+        read_only_fields = ['id', 'user', 'status', 'total_views', 'created_time', 'last_modified']
+
+    def validate(self, data):
+        """
+        Validate sender balance
+        """
+
+        print(data)
+        print(data.get('category'))
+        # if data.get('category'):
+        #     try:
+        #         category = Category.objects.get(title=data.get('category'))
+        #     except Category.DoesNotExist:
+        #         raise serializers.ValidationError('Invalid Category')
+
+        if data.get('date_expire') and datetime.datetime.strptime(data.get('date_expire'), "%d/%m/%Y %H:%M") < datetime.datetime.now():
+            raise serializers.ValidationError('Invalid expire date')
+
+        # if self.instance.user != self.context['request'].user:
+        #     """
+        #     Validate authenticated user
+        #     """
+        #     raise serializers.ValidationError('You can not edit posts from other users')
+        
+        return data
+
 
 class PostSerializerFull(PostSerializer):
     post_replies = PostReplySerializer(many=True, read_only=True)

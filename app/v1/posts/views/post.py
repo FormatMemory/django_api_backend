@@ -2,8 +2,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView, CreateAPIView
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
 from v1.filters.posts.post import post_filter
 from v1.posts.models.post import Post
 from v1.posts.serializers.post import PostSerializer, PostSerializerCreate, PostSerializerFull, PostSerializerUpdate
@@ -13,16 +14,42 @@ from v1.accounts.models.user import User
 from datetime import datetime
 
 class PostPagination(PageNumberPagination):
-    page_size = 1
+    page_size = 5
+    page_size_query_param = 'page_size'
+    max_page_size = 50
 
 #posts
-class PostView(ListCreateAPIView):
+class PostListView(ListAPIView):
+    """
+    Get: 
+        Show a list of posts
+    Post: 
+        create a new post
+    """
+    # def get_serializer_class(self):
+    #     if self.request.method == 'GET':
+    #         return PostSerializer
+    #     if self.request.method == 'POST':
+    #         return PostSerializerCreate
+    #     return PostSerializer 
+
     queryset = Post.objects.all()
+    # serializer_class = self.get_serializer_class()
     serializer_class = PostSerializer
     pagination_class = PostPagination
 
+class PostCreateAPIView(CreateAPIView):
+    queryset = Post.objects.all()
+    # serializer_class = self.get_serializer_class()
+    serializer_class = PostSerializerCreate
+    permission_class = [IsAuthenticated]
 
-
+    def perform_create(self, serializer):
+        serializer = PostSerializerCreate(data=self.request.data, context={'request': self.request})
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+            return Response(PostSerializer(serializer.instance).data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # posts
 # class PostView(APIView):

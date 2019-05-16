@@ -23,7 +23,7 @@ class Post(CreatedModified):
 
     class Meta:
         default_related_name = 'posts'
-        ordering = ['created_time']
+        ordering = ['-created_time']
 
     def __str__(self):
         return self.title

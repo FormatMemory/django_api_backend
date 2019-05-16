@@ -47,7 +47,7 @@ class UserSerializerCreate(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'nick_name', 'password')
+        fields = ['email', 'nick_name', 'password']
 
     def validate(self, data):
         """
@@ -93,4 +93,4 @@ class UserSerializerUpdate(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('nick_name')
+        fields = ('nick_name',)
