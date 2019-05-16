@@ -21,10 +21,7 @@ class PostPagination(PageNumberPagination):
 #posts
 class PostListView(ListAPIView):
     """
-    Get: 
-        Show a list of posts
-    Post: 
-        create a new post
+    Get: Show a list of posts
     """
     # def get_serializer_class(self):
     #     if self.request.method == 'GET':
@@ -39,6 +36,9 @@ class PostListView(ListAPIView):
     pagination_class = PostPagination
 
 class PostCreateAPIView(CreateAPIView):
+    """
+    Post: create a new post
+    """
     queryset = Post.objects.all()
     # serializer_class = self.get_serializer_class()
     serializer_class = PostSerializerCreate
