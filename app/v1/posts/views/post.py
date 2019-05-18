@@ -100,7 +100,10 @@ class PostDetail(APIView):
         user_page_view, created = UserPageView.objects.get_or_create(post=post, ip=request.META['REMOTE_ADDR'], created=datetime.now().strftime('%Y-%m-%d %H:%M:00'))
         if created: 
             user_page_view.session=request.session.session_key
-            user_page_view.user=request.user
+            if request.user.is_authenticated:
+                user_page_view.user=request.user
+            else:
+                user_page_view.user=None
             user_page_view.save()
                 # user_page_view.save()
                 # return HttpResponse(u"%s" % UserPageView.objects.filter(question=question).count())
