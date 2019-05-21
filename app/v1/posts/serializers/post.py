@@ -8,7 +8,7 @@ from v1.votes.serializers.post_vote import PostVoteSerializer
 from v1.user_page_views.models.user_page_view import UserPageView
 from v1.user_page_views.serializers.user_page_view import UserPageViewSerializer
 from v1.categories.models.category import Category
-import datetime
+from datetime import datetime
 
 
 class PostCategorySerializer(serializers.ModelSerializer):
@@ -37,12 +37,17 @@ class PostSerializer(serializers.ModelSerializer):
     login_user_go_to_link = serializers.SerializerMethodField()
     user = UserSerializer()
     category = PostCategorySerializer(many=True)
+    created_time_timestamp = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
         fields = '__all__'
         ordering = ['-post_total_view', '-post_votes', '-created_time']
 
+    @staticmethod
+    def get_created_time_timestamp(post):
+        return datetime.timestamp(post.created_time)
+    
     @staticmethod
     def get_post_reply_count(post):
         return PostReply.objects.filter(post=post).count()

@@ -10,7 +10,7 @@ class Post(CreatedModified):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     title = models.CharField(max_length=255)
     body = models.TextField()
-    image = models.ImageField(blank=True)
+    image = models.ImageField(blank=True, upload_to="")
     deal_link = models.URLField(blank=True)
     date_expire = models.DateTimeField(null=True, blank=True) # DurationField
     # date_posted = models.DateTimeField(null=True, auto_now_add=True)
