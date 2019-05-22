@@ -57,7 +57,7 @@ services:
                 - TZ=${TIME_ZONE}
         restart: always
         ports:
-            - "8081:8081"
+            - "80:80"
         # command: >
         #     - nginx -g 'daemon off;'
         environment:

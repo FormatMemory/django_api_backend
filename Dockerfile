@@ -38,18 +38,18 @@ RUN pip install -r requirements/production.txt
 RUN rm -rf .cache/pip
 RUN apk del .tmp-build-deps
 
-RUN adduser -D user
+# RUN adduser -D user
 
 RUN mkdir -p /media
 RUN mkdir -p /static
-RUN chown -R user:user /static/
-RUN chown -R user:user /media/
+# RUN chown -R user:user /static/
+# RUN chown -R user:user /media/
 RUN chmod -R 755 /static/
 RUN chmod -R 755 /media/
-USER user
+# USER user
 
-EXPOSE 8000
-#CMD ["python", "manage.py", "migrate"]
+# EXPOSE 8000
+# CMD ["python", "manage.py", "migrate"]
 # CMD ["gunicorn", "-c", "gunicorn_conf.py", "--chdir", "app", "app.wsgi:application", "--reload"]
 # RUN python manage.py wait_for_db
 # RUN python manage.py makemigrations
