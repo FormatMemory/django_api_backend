@@ -14,7 +14,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     nick_name= models.CharField(max_length=50, unique=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    status = models.CharField(max_length=50, default=constants.USER_STATUS_ACTIVE)
+    status = models.CharField(choices=constants.USER_STATUS_CHOICES, default=constants.STATUS_ACTIVE, max_length=30)
     last_modified = models.DateTimeField(auto_now=True)
     last_ip = models.GenericIPAddressField(null=True, blank=True)
     signup_ip = models.GenericIPAddressField(null=True, blank=True)

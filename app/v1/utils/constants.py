@@ -17,16 +17,27 @@ VOTE_VALUE_CHOICES = (
     (VOTE_DOWN, 'Down')
 )
 
-# User status
-USER_STATUS_ACTIVE = 'active'
-USER_STATUS_BANNED = 'banned'
-USER_STATUS_INACTIVE = 'inactive'
+# status
+STATUS_ACTIVE = 'active'
+STATUS_BANNED = 'banned'
+STATUS_INACTIVE = 'inactive'
+STATUS_AUDITED = 'audited'
+STATUS_EXPIRE = 'expire'
 
-# Post status
-POST_STATUS_ACTIVE = 'active'
-POST_STATUS_BANNED = 'banned'
-POST_STATUS_EXPIRE = 'expire'
-POST_STATUS_AUDITED = 'audited'
+USER_STATUS_CHOICES = (
+    (STATUS_ACTIVE, 'active'),
+    (STATUS_BANNED, 'banned'),
+    (STATUS_INACTIVE, 'inactive'),
+)
+
+POST_STATUS_CHOICES = (
+   (STATUS_ACTIVE, 'active'),
+    (STATUS_BANNED, 'banned'),
+    (STATUS_INACTIVE, 'inactive'),
+    (STATUS_AUDITED, 'audited'),
+    (STATUS_EXPIRE, 'expire'),
+)
+
 
 # View
 USER_VIEW_CHOICES = (
