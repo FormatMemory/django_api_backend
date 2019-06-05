@@ -10,8 +10,8 @@ from v1.utils import constants
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
     date_joined = models.DateTimeField(auto_now_add=True)
-    email = models.EmailField(max_length=255, unique=True)
-    nick_name= models.CharField(max_length=50, unique=True, blank=True)
+    email = models.EmailField(max_length=255, blank=True, default="")
+    username = models.CharField(max_length=50, unique=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     status = models.CharField(choices=constants.USER_STATUS_CHOICES, default=constants.STATUS_ACTIVE, max_length=30)
@@ -24,20 +24,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = 'username'
 
     class Meta:
         app_label = 'accounts'
         ordering = ['id']
 
     def __str__(self):
-        return self.email
+        return self.username
 
     def get_short_name(self):
-        return self.nick_name
+        return self.username
 
     def get_full_name(self):
-        return self.email
+        return self.username
 
     def save(self, *args, **kwargs):
         if not self.password:
@@ -48,4 +48,5 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         Sends an email to this User.
         '''
-        send_mail(subject, message, from_email, [self.email], **kwargs)
+        if self.email:
+            send_mail(subject, message, from_email, [self.email], **kwargs)

@@ -13,4 +13,4 @@ class Transfer(CreatedModified):
         default_related_name = 'transfers'
 
     def __str__(self):
-        return f'{self.sender.email} > {self.receiver.email} - {self.amount}'
+        return f'{self.sender.username} > {self.receiver.username} - {self.amount}'

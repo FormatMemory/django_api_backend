@@ -11,7 +11,7 @@ class UserSimpleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'nick_name', 'status',)
+        fields = ('id', 'email', 'username', 'status',)
 
 class UserSerializer(serializers.ModelSerializer):
     profile = serializers.SerializerMethodField()
@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'nick_name', 'status', 'profile', 'role', )
+        fields = ('id', 'email', 'username', 'status', 'profile', 'role', )
 
     @staticmethod
     def get_profile(user):
@@ -47,13 +47,13 @@ class UserSerializerCreate(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'nick_name', 'password']
+        fields = ['email', 'username', 'password']
 
     def validate(self, data):
         """
         Administrator permissions needed
         """
-        if User.objects.get(email=data.email).exist() or User.objects.get(nickname=data.nick_name).exist():
+        if User.objects.get(username=data.username).exist():
             raise serializers.ValidationError(constants.USER_OR_NICKNAME_EXIST)
 
         ## enable everyone to create user
@@ -86,11 +86,11 @@ class UserSerializerLogin(UserSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'nick_name', 'profile', 'role', 'token', 'status')
+        fields = ('id', 'email', 'username', 'profile', 'role', 'token', 'status')
 
 
 class UserSerializerUpdate(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('nick_name',)
+        fields = ('username',)
