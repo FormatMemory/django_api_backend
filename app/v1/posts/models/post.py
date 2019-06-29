@@ -30,7 +30,7 @@ class Post(CreatedModified):
     features = JSONField(null=True, blank=True)
     manufacturer = models.CharField(max_length=30, blank = True, null=True)
     model_number = models.CharField(max_length=30, blank = True, null=True)
-    percentSavings = models.DecimalField(blank = True, null=True,  max_digits=5, decimal_places=2)
+    percent_savings = models.DecimalField(blank = True, null=True,  max_digits=5, decimal_places=2)
     regular_price = models.DecimalField(blank = True, null=True, max_digits=12, decimal_places=2)
     sale_price = models.DecimalField(blank = True, null=True, max_digits=12, decimal_places=2)
     date_start =  models.DateTimeField(null=True, blank=True) # DurationField
