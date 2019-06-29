@@ -22,14 +22,14 @@ class Post(CreatedModified):
     category = models.ManyToManyField(Category, blank=True)
 
     # new add
-    source = models.TextField(max_length=30,blank = True, null=True)
-    sku = models.TextField(max_length=25,blank = True, null=True)
+    source = models.CharField(max_length=55, blank = True, null=True)
+    sku = models.CharField(max_length=25, blank = True, null=True)
     customer_review = models.DecimalField(blank = True, null=True,  max_digits=4, decimal_places=2)
     details = JSONField(null=True, blank=True)
     dollar_savings = models.DecimalField(blank = True, null=True, max_digits=12, decimal_places=2)
     features = JSONField(null=True, blank=True)
-    manufacturer = models.TextField(max_length=30,blank = True, null=True)
-    model_number = models.TextField(max_length=30,blank = True, null=True)
+    manufacturer = models.CharField(max_length=30, blank = True, null=True)
+    model_number = models.CharField(max_length=30, blank = True, null=True)
     percentSavings = models.DecimalField(blank = True, null=True,  max_digits=5, decimal_places=2)
     regular_price = models.DecimalField(blank = True, null=True, max_digits=12, decimal_places=2)
     sale_price = models.DecimalField(blank = True, null=True, max_digits=12, decimal_places=2)
