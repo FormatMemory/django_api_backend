@@ -88,14 +88,10 @@ class PostSerializerCreate(serializers.ModelSerializer):
         fields = '__all__'
         # exclude = ('status', 'total_views', 'created_time', 'last_modified', 'category')
         read_only_fields = ['id', 'user', 'status', 'total_views', 'created_time', 'last_modified']
-
     def validate(self, data):
         """
         Validate sender balance
         """
-
-        print(data)
-        print(data.get('category'))
         # if data.get('category'):
         #     try:
         #         category = Category.objects.get(title=data.get('category'))
@@ -104,7 +100,8 @@ class PostSerializerCreate(serializers.ModelSerializer):
 
         if data.get('date_expire') and datetime.datetime.strptime(data.get('date_expire'), "%d/%m/%Y %H:%M") < datetime.datetime.now():
             raise serializers.ValidationError('Invalid expire date')
-
+        if data.get('date_expire') and data.get('date_start') and datetime.datetime.strptime(data.get('date_expire'), "%d/%m/%Y %H:%M") > datetime.datetime.strptime(data.get('date_start'), "%d/%m/%Y %H:%M"):
+            raise serializers.ValidationError('Invalid expire date')
         # if self.instance.user != self.context['request'].user:
         #     """
         #     Validate authenticated user
