@@ -29,6 +29,10 @@ DATABASES = {
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASS'),
         'PORT': os.environ.get('DB_PORT'),
-        'default-character-set': 'utf8',
+        'default-character-set': 'utf8mb4',
+        'OPTIONS': {
+            # Tell MySQLdb to connect with 'utf8mb4' character set
+            'charset': 'utf8mb4',
+        },
     }
 }
