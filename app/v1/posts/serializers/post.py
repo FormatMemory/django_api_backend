@@ -90,7 +90,7 @@ class PostSerializerCreate(serializers.ModelSerializer):
         read_only_fields = ['id', 'user', 'status', 'total_views', 'created_time', 'last_modified']
     def validate(self, data):
         """
-        Validate sender balance
+        Validate post data is valid
         """
         # if data.get('category'):
         #     try:
