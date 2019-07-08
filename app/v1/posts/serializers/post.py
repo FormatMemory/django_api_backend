@@ -98,10 +98,13 @@ class PostSerializerCreate(serializers.ModelSerializer):
         #     except Category.DoesNotExist:
         #         raise serializers.ValidationError('Invalid Category')
 
-        if data.get('date_expire') and datetime.datetime.strptime(data.get('date_expire'), "%d/%m/%Y %H:%M") < datetime.datetime.now():
-            raise serializers.ValidationError('Invalid expire date')
-        if data.get('date_expire') and data.get('date_start') and datetime.datetime.strptime(data.get('date_expire'), "%d/%m/%Y %H:%M") > datetime.datetime.strptime(data.get('date_start'), "%d/%m/%Y %H:%M"):
-            raise serializers.ValidationError('Invalid expire date')
+        # Time upload are not consistant in this case
+        # if data.get('date_expire') and datetime.strptime(str(data.get('date_expire')), "%d/%m/%Y %H:%M") < datetime.now():
+        #     raise serializers.ValidationError('Invalid expire date')
+        # if data.get('date_expire') and data.get('date_start') and datetime.strptime(str(data.get('date_expire')), "%d/%m/%Y %H:%M") > datetime.strptime(str(data.get('date_start')), "%d/%m/%Y %H:%M"):
+        #     raise serializers.ValidationError('Invalid expire date')
+
+
         # if self.instance.user != self.context['request'].user:
         #     """
         #     Validate authenticated user
