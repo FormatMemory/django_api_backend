@@ -4,7 +4,7 @@ from v1.general.created_modified import CreatedModified
 from v1.utils import constants
 from v1.categories.models.category import Category
 from taggit.managers import TaggableManager
-from django_mysql.models import JSONField
+# from django_mysql.models import JSONField
 
 
 class Post(CreatedModified):
@@ -25,9 +25,9 @@ class Post(CreatedModified):
     source = models.CharField(max_length=55, blank = True, null=True)
     sku = models.CharField(max_length=25, blank = True, null=True)
     customer_review = models.DecimalField(blank = True, null=True,  max_digits=4, decimal_places=2)
-    details = JSONField(null=True, blank=True)
+    details = models.TextField(blank = True, null=True)
     dollar_savings = models.DecimalField(blank = True, null=True, max_digits=12, decimal_places=2)
-    features = JSONField(null=True, blank=True)
+    features = models.TextField(blank = True, null=True)
     manufacturer = models.CharField(max_length=30, blank = True, null=True)
     model_number = models.CharField(max_length=30, blank = True, null=True)
     percent_savings = models.DecimalField(blank = True, null=True,  max_digits=5, decimal_places=2)
