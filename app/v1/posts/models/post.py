@@ -5,14 +5,21 @@ from v1.utils import constants
 from v1.categories.models.category import Category
 from taggit.managers import TaggableManager
 # from django_mysql.models import JSONField
+import uuid
+import os
 
+
+def get_file_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return os.path.join('images/', filename)
 
 class Post(CreatedModified):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     title = models.CharField(max_length=255)
     body = models.TextField() # Description
-    image = models.ImageField(blank=True, upload_to="")
+    image = models.ImageField(blank=True, upload_to=get_file_path)
     deal_link = models.URLField(blank=True)
     date_expire = models.DateTimeField(null=True, blank=True) # DurationField
     # date_posted = models.DateTimeField(null=True, auto_now_add=True)
