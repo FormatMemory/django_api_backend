@@ -16,7 +16,7 @@ class Post(CreatedModified):
     deal_link = models.URLField(blank=True)
     date_expire = models.DateTimeField(null=True, blank=True) # DurationField
     # date_posted = models.DateTimeField(null=True, auto_now_add=True)
-    # last_modified = models.DateTimeField(null=True, auto_now=True)
+    last_modified = models.DateTimeField(null=True, auto_now=True)
     status = models.CharField(choices=constants.POST_STATUS_CHOICES, default=constants.STATUS_ACTIVE, max_length=30)
     coupon_code = models.CharField(max_length=50, null=True, blank=True)
     category = models.ManyToManyField(Category, blank=True)
