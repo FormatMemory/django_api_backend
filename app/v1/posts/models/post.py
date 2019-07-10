@@ -7,6 +7,7 @@ from taggit.managers import TaggableManager
 # from django_mysql.models import JSONField
 import uuid
 import os
+from v1.general.image_validator import validate_image
 
 
 def get_file_path(instance, filename):
@@ -19,7 +20,7 @@ class Post(CreatedModified):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     title = models.CharField(max_length=255)
     body = models.TextField() # Description
-    image = models.ImageField(blank=True, upload_to=get_file_path)
+    image = models.ImageField(blank=True, upload_to=get_file_path, validators=[validate_image]) #TODO: Add more method to control post base64 file size
     deal_link = models.URLField(blank=True)
     date_expire = models.DateTimeField(null=True, blank=True) # DurationField
     # date_posted = models.DateTimeField(null=True, auto_now_add=True)
@@ -51,3 +52,15 @@ class Post(CreatedModified):
 
     def __str__(self):
         return self.title
+
+    
+
+    def validate_image(image):
+        file_size = image.file.size
+        limit_kb = 10*1024
+        if file_size > limit_kb * 1024:
+            raise ValidationError("Max size of file is %s KB" % limit)
+
+    #limit_mb = 8
+    #if file_size > limit_mb * 1024 * 1024:
+    #    raise ValidationError("Max size of file is %s MB" % limit_mb)
