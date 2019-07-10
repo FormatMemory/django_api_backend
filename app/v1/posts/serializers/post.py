@@ -9,7 +9,7 @@ from v1.user_page_views.models.user_page_view import UserPageView
 from v1.user_page_views.serializers.user_page_view import UserPageViewSerializer
 from v1.categories.models.category import Category
 from datetime import datetime
-
+from drf_extra_fields.fields import Base64ImageField
 
 class PostCategorySerializer(serializers.ModelSerializer):
 
@@ -82,28 +82,29 @@ class PostSerializer(serializers.ModelSerializer):
 class PostSerializerCreate(serializers.ModelSerializer):
     # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     # category = PostCategorySerializer(many=True)
+    image = Base64ImageField(required=False)
 
     class Meta:
         model = Post
         fields = '__all__'
         # exclude = ('status', 'total_views', 'created_time', 'last_modified', 'category')
         read_only_fields = ['id', 'user', 'status', 'total_views', 'created_time', 'last_modified']
-
     def validate(self, data):
         """
-        Validate sender balance
+        Validate post data is valid
         """
-
-        print(data)
-        print(data.get('category'))
         # if data.get('category'):
         #     try:
         #         category = Category.objects.get(title=data.get('category'))
         #     except Category.DoesNotExist:
         #         raise serializers.ValidationError('Invalid Category')
 
-        if data.get('date_expire') and datetime.datetime.strptime(data.get('date_expire'), "%d/%m/%Y %H:%M") < datetime.datetime.now():
-            raise serializers.ValidationError('Invalid expire date')
+        # Time upload are not consistant in this case
+        # if data.get('date_expire') and datetime.strptime(str(data.get('date_expire')), "%d/%m/%Y %H:%M") < datetime.now():
+        #     raise serializers.ValidationError('Invalid expire date')
+        # if data.get('date_expire') and data.get('date_start') and datetime.strptime(str(data.get('date_expire')), "%d/%m/%Y %H:%M") > datetime.strptime(str(data.get('date_start')), "%d/%m/%Y %H:%M"):
+        #     raise serializers.ValidationError('Invalid expire date')
+
 
         # if self.instance.user != self.context['request'].user:
         #     """
@@ -120,9 +121,11 @@ class PostSerializerFull(PostSerializer):
 
 class PostSerializerUpdate(serializers.ModelSerializer):
 
+    image = Base64ImageField(required=False)
+
     class Meta:
         model = Post
-        exclude = ('user', 'created_time', 'last_modified', )
+        exclude = ('user', 'created_time', 'last_modified', 'id', 'status', )
 
     def validate(self, data):
         """

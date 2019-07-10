@@ -8,7 +8,7 @@ from v1.credits.models.invitation import Invitation
 class AcceptInvitationSerializer(serializers.Serializer):
     code = serializers.UUIDField()
     email = serializers.EmailField()
-    nick_name = serializers.CharField(max_length=50)
+    username = serializers.CharField(max_length=50)
     password = serializers.CharField(max_length=128)
 
     def create(self, validated_data):
@@ -17,8 +17,7 @@ class AcceptInvitationSerializer(serializers.Serializer):
         """
 
         user = User.objects.create(
-            email=validated_data['email'],
-            nick_name=validated_data['nick_name'],
+            username=validated_data['username'],
         )
         user.set_password(validated_data['password'])
         Invitation.objects.filter(code=validated_data['code']).update(receiver=user)
@@ -39,13 +38,13 @@ class AcceptInvitationSerializer(serializers.Serializer):
         return value
 
     @staticmethod
-    def validate_email(value):
+    def validate_username(value):
         """
-        Check the email is unique
+        Check the username is unique
         """
 
-        if User.objects.filter(email=value):
-            raise serializers.ValidationError('Email already exists')
+        if User.objects.filter(username=value):
+            raise serializers.ValidationError('username already exists')
         return value
 
     @staticmethod

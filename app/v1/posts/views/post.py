@@ -44,7 +44,7 @@ class PostCreateAPIView(CreateAPIView):
     serializer_class = PostSerializerCreate
     permission_class = [IsAuthenticated]
 
-    def perform_create(self, serializer):
+    def post(self, serializer):
         serializer = PostSerializerCreate(data=self.request.data, context={'request': self.request})
         if serializer.is_valid():
             serializer.save(user=self.request.user)
@@ -127,7 +127,7 @@ class PostDetail(APIView):
         serializer = PostSerializerUpdate(post, data=request.data, context={'request': request}, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(PostSerializerFull(serializer.instance).data)
+            return Response(PostSerializerFull(serializer.instance).data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @staticmethod

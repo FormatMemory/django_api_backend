@@ -18,8 +18,8 @@ class LoginView(APIView):
         Get user data and API token
         """
 
-        user = get_object_or_404(User, email=request.data.get('email'))
-        user = authenticate(username=user.email, password=request.data.get('password'))
+        user = get_object_or_404(User, username=request.data.get('username'))
+        user = authenticate(username=user.username, password=request.data.get('password'))
         if user:
             serializer = UserSerializerLogin(user)
             User.objects.filter(id=user.id).update(last_ip=request.META['REMOTE_ADDR'])
