@@ -9,7 +9,7 @@ from v1.user_page_views.models.user_page_view import UserPageView
 from v1.user_page_views.serializers.user_page_view import UserPageViewSerializer
 from v1.categories.models.category import Category
 from datetime import datetime
-
+from drf_extra_fields.fields import Base64ImageField
 
 class PostCategorySerializer(serializers.ModelSerializer):
 
@@ -119,6 +119,8 @@ class PostSerializerFull(PostSerializer):
 
 
 class PostSerializerUpdate(serializers.ModelSerializer):
+
+    image = Base64ImageField(required=False)
 
     class Meta:
         model = Post
