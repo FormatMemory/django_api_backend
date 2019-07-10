@@ -82,6 +82,7 @@ class PostSerializer(serializers.ModelSerializer):
 class PostSerializerCreate(serializers.ModelSerializer):
     # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     # category = PostCategorySerializer(many=True)
+    image = Base64ImageField(required=False)
 
     class Meta:
         model = Post
