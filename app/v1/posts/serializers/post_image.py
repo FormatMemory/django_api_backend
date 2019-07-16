@@ -26,7 +26,32 @@ class PostImageSerializer(serializers.ModelSerializer):
         """
         Validate authenticated user
         """
+        if user != self.context['request'].user or user != self.post.user:
+            raise serializers.ValidationError('You can not modify post image for other users')
+        return user
 
-        if user != self.context['request'].user:
+
+class PostExtraImageSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    post = PostSimpleSerializer()
+    extra_images = PostImageSerializer(many=True)
+    post_id = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PostImage
+        fields = '__all__'
+        ordering = ['-created_time']
+        read_only_fields = ['user', 'created_time', 'last_modified']
+
+    @staticmethod
+    def get_post_id(post):
+        return Post.objects.filter(post=post)
+
+    def validate_user(self, user):
+        """
+        Validate authenticated user
+        """
+
+        if user != self.context['request'].user or user != self.post.user:
             raise serializers.ValidationError('You can not modify post image for other users')
         return user

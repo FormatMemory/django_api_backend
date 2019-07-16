@@ -2,20 +2,23 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView, ListAPIView, CreateAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView, CreateAPIView, GenericAPIView
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from v1.posts.models.post import Post
 from v1.posts.models.post_image import PostImage
-from v1.posts.serializers.post_image import PostImageSerializer
+from v1.posts.serializers.post_image import PostImageSerializer, PostExtraImageSerializer
 from v1.accounts.models.user import User
 
 class PostImageDetailAPIView(mixins.RetrieveModelMixin,
                             mixins.UpdateModelMixin,
                             mixins.DestroyModelMixin,
                             generics.GenericAPIView):
+    """
+    Single post extra image
+    """
 
     queryset = PostImage.objects.all()
     serializer_class = PostImageSerializer
@@ -43,3 +46,19 @@ class PostImageDetailAPIView(mixins.RetrieveModelMixin,
             self.destroy(request, *args, **kwargs)
             return Response(PostImageSerializer(serializer.instance).data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PostExtraImageAPIView(GenericAPIView):
+    queryset = PostImage.objects.all()
+    serializer_class = PostExtraImageSerializer
+
+    """
+    Post -- extra image
+    """
+
+    def get(self, request, post_id):
+        post = get_object_or_404(Post, pk=post_id)
+        # post_images = PostImage.objects.all().get(post=post)
+        post_images = get_object_or_404(PostImage, post=post)
+        serializer = PostExtraImageSerializer(post,post_images, data=request.data, context={'request': request}, partial=True)
+        return Response((serializer.instance).data, status=status.HTTP_200_OK)
